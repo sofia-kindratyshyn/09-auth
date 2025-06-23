@@ -1,15 +1,15 @@
 'use client'
 import css from './Notes.client.module.css'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import NoteList from '../components/NoteList/NoteList'
+import NoteList from '../../components/NoteList/NoteList'
 import { useState } from 'react'
-import Pagination from '../components/Pagination/Pagination'
+import Pagination from '../../components/Pagination/Pagination'
 import { Toaster } from 'react-hot-toast'
 import { useDebounce } from 'use-debounce'
 import React from 'react'
 import { getNotes, NotesResponce } from '../../lib/api'
-import SearchBox from '../components/SearchBox/SearchBox'
-import NoteModal from '../components/NoteModal/NoteModal'
+import SearchBox from '../../components/SearchBox/SearchBox'
+import NoteModal from '../../components/NoteModal/NoteModal'
 
 export default function NotesClient() {
   const [pageCount, setPageCount] = useState(1)
