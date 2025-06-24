@@ -1,8 +1,9 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { fetchNoteById, Note } from '../../../lib/api'
+import { fetchNoteById } from '../../../lib/api'
 import css from './NoteDetails.module.css'
+import { Note } from '../../../types/note'
 
 export default function NoteDetailsClient({ noteId }: { noteId: string }) {
   const {
@@ -12,11 +13,11 @@ export default function NoteDetailsClient({ noteId }: { noteId: string }) {
   } = useQuery<Note>({
     queryKey: ['note', noteId],
     queryFn: () => fetchNoteById(noteId),
+    refetchOnMount: false,
   })
 
   if (isLoading) return <p>Loading, please wait...</p>
   if (error || !note) return <p>Something went wrong.</p>
-
   return (
     <>
       <div className={css.container}>

@@ -1,36 +1,46 @@
 'use client'
 import css from './Notes.client.module.css'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import NoteList from '../../components/NoteList/NoteList'
-import { useState } from 'react'
-import Pagination from '../../components/Pagination/Pagination'
-import { Toaster } from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 import { useDebounce } from 'use-debounce'
-import React from 'react'
-import { getNotes, NotesResponce } from '../../lib/api'
+import { NotesResponse, getNotes } from '../../lib/api'
+import NoteList from '../../components/NoteList/NoteList'
 import SearchBox from '../../components/SearchBox/SearchBox'
+import Pagination from '../../components/Pagination/Pagination'
 import NoteModal from '../../components/NoteModal/NoteModal'
+import { Toaster } from 'react-hot-toast'
 
-export default function NotesClient() {
-  const [pageCount, setPageCount] = useState(1)
-  const [openModal, setOpenModal] = useState(false)
+type NotesClientProps = {
+  notes: NotesResponse
+}
+
+export default function NotesClient({ notes: initialNotes }: NotesClientProps) {
+  const [notes, setNotes] = useState<NotesResponse>(initialNotes)
+  const [page, setPage] = useState(1)
   const [searchedValue, setSearchedValue] = useState('')
   const [debouncedText] = useDebounce(searchedValue, 300)
+  const [openModal, setOpenModal] = useState(false)
+  const [localNotes, setLocalNotes] = useState(notes.notes)
 
-  const { data, isSuccess } = useQuery<NotesResponce>({
-    queryKey: ['note', debouncedText, pageCount],
-    queryFn: () => getNotes(pageCount, debouncedText),
-    placeholderData: keepPreviousData,
-  })
+  useEffect(() => {
+    async function fetchNotes() {
+      const res = await getNotes(debouncedText, page)
+      setNotes(res)
+    }
 
-  function closeModal() {
-    setOpenModal(false)
-    console.log(data?.total)
-  }
+    fetchNotes()
+  }, [debouncedText, page])
 
   const getHandleSearch = (value: string) => {
     setSearchedValue(value)
-    setPageCount(1)
+    setPage(1)
+  }
+
+  const closeModal = () => {
+    setOpenModal(false)
+  }
+
+  function handleDelete(id: number) {
+    setLocalNotes(prev => prev.filter(note => note.id !== id))
   }
 
   return (
@@ -38,19 +48,17 @@ export default function NotesClient() {
       <Toaster />
       <header className={css.toolbar}>
         <SearchBox value={searchedValue} getValue={getHandleSearch} />
-        {typeof data?.total === 'number' && data.total > 1 && (
-          <Pagination totalPages={data.total} currentPage={pageCount} onPageChange={setPageCount} />
+        {typeof notes.totalPages === 'number' && notes.totalPages > 1 && (
+          <Pagination totalPages={notes.totalPages} currentPage={page} onPageChange={setPage} />
         )}
 
-        {isSuccess && (
-          <button onClick={() => setOpenModal(!openModal)} className={css.button}>
-            Create note +
-          </button>
-        )}
+        <button onClick={() => setOpenModal(true)} className={css.button}>
+          Create note +
+        </button>
       </header>
 
-      {data?.notes && data.notes.length == 0 && <p>There are no notes found for your request</p>}
-      {data?.notes && <NoteList notes={data.notes} />}
+      {notes.notes.length === 0 && <p>There are no notes found for your request</p>}
+      {notes.notes.length > 0 && <NoteList notes={localNotes} onDelete={handleDelete} />}
       {openModal && <NoteModal toClose={closeModal} />}
     </div>
   )

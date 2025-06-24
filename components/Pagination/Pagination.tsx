@@ -11,7 +11,7 @@ interface PaginationProps {
 export default function Paginate({ totalPages, onPageChange, currentPage }: PaginationProps) {
   return (
     <ReactPaginate
-      pageCount={Math.ceil(totalPages / 10)}
+      pageCount={totalPages}
       forcePage={currentPage - 1}
       pageRangeDisplayed={5}
       marginPagesDisplayed={1}

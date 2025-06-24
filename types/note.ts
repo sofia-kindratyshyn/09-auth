@@ -1,10 +1,12 @@
 export type NoteForPost = {
-    title: string,
-    content: string,
-categoryId: string
+  title: string
+  content: string
+  tag: string
 }
-
-export type ErrorProps = {
-  error: Error
-  reset: () => void
+export type Note = {
+  id: number
+  title: string
+  content: string
+  tag: string
+  createdAt: string
 }

@@ -19,6 +19,9 @@ const CreatingNoteSchema = Yup.object().shape({
   content: Yup.string()
     .max(500, 'Content must not contain more than 500 symbols.')
     .required('Content is required'),
+  tag: Yup.string()
+    .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'], 'Invalid category')
+    .required('Category is required.'),
 })
 
 export default function NoteForm({ onClose }: NoteFormProps) {
@@ -31,7 +34,9 @@ export default function NoteForm({ onClose }: NoteFormProps) {
     },
     onSuccess: () => {
       toast.success('The note successfully created.')
-      queryClient.invalidateQueries({ queryKey: ['note'] })
+      queryClient.invalidateQueries({
+        predicate: query => query.queryKey[0] === 'note',
+      })
       onClose()
     },
   })
@@ -46,7 +51,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
       initialValues={{
         title: '',
         content: '',
-        categoryId: '592f6727-80fe-4bcc-ae13-5d2e6ae5186b',
+        tag: '',
       }}
       onSubmit={handleSubmit}
       validationSchema={CreatingNoteSchema}
@@ -65,15 +70,18 @@ export default function NoteForm({ onClose }: NoteFormProps) {
         </div>
 
         <div className={css.formGroup}>
-          <label htmlFor='categoryId'>Category Id</label>
-          <Field as='select' id='categoryId' name='categoryId' className={css.select}>
+          <label htmlFor='tag'>Category Id</label>
+          <Field as='select' id='tag' name='tag' className={css.select}>
             <option value='' disabled>
               Select category
             </option>
-            <option value='592f6727-80fe-4bcc-ae13-5d2e6ae5186b'>Home</option>
-            <option value='adba00fe-520b-431d-a247-dc362e6f41a1'>Work</option>
+            <option value='Todo'>Todo</option>
+            <option value='Work'>Work</option>
+            <option value='Personal'>Personal</option>
+            <option value='Meeting'>Meeting</option>
+            <option value='Shopping'>Shopping</option>
           </Field>
-          <ErrorMessage name='categoryId' component='span' className={css.error} />
+          <ErrorMessage name='tag' component='span' className={css.error} />
         </div>
 
         <div className={css.actions}>

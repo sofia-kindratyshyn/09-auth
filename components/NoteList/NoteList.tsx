@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { Note } from '../../lib/api'
+import { useMutation } from '@tanstack/react-query'
+import type { Note } from '../../types/note'
 import css from './NoteList.module.css'
 import toast from 'react-hot-toast'
 import { deleteNote } from '../../lib/api'
@@ -7,19 +7,18 @@ import Link from 'next/link'
 
 interface NoteListProps {
   notes: Note[]
+  onDelete: (id: number) => void
 }
 
-export default function NoteList({ notes }: NoteListProps) {
-  const queryClient = useQueryClient()
-
+export default function NoteList({ notes, onDelete }: NoteListProps) {
   const mutation = useMutation({
-    mutationFn: (noteId: number) => deleteNote(noteId),
+    mutationFn: (id: number) => deleteNote(id),
     onError: () => {
       toast.error('There was an error while deleting.')
     },
-    onSuccess: () => {
+    onSuccess: (_note, id) => {
       toast.success('The note successfully deleted!')
-      queryClient.invalidateQueries({ queryKey: ['note'] })
+      onDelete(id)
     },
   })
 
