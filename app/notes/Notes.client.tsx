@@ -11,10 +11,10 @@ import { Toaster } from 'react-hot-toast'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 type NotesClientProps = {
-  responce: NotesResponse
+  response: NotesResponse
 }
 
-export default function NotesClient({ responce }: NotesClientProps) {
+export default function NotesClient({ response }: NotesClientProps) {
   const [page, setPage] = useState(1)
   const [searchedValue, setSearchedValue] = useState('')
   const [debouncedText] = useDebounce(searchedValue, 300)
@@ -24,6 +24,7 @@ export default function NotesClient({ responce }: NotesClientProps) {
     queryKey: ['notes', debouncedText, page],
     queryFn: () => getNotes(debouncedText, page),
     placeholderData: keepPreviousData,
+    initialData: response,
   })
 
   const getHandleSearch = (value: string) => {
@@ -40,8 +41,8 @@ export default function NotesClient({ responce }: NotesClientProps) {
       <Toaster />
       <header className={css.toolbar}>
         <SearchBox getValue={getHandleSearch} />
-        {typeof responce.totalPages === 'number' && responce.totalPages > 1 && (
-          <Pagination totalPages={responce.totalPages} currentPage={page} onPageChange={setPage} />
+        {typeof data.totalPages === 'number' && data.totalPages > 1 && (
+          <Pagination totalPages={data.totalPages} currentPage={page} onPageChange={setPage} />
         )}
 
         <button onClick={() => setOpenModal(true)} className={css.button}>
@@ -49,7 +50,7 @@ export default function NotesClient({ responce }: NotesClientProps) {
         </button>
       </header>
 
-      {responce.notes.length === 0 && <p>There are no notes found for your request</p>}
+      {data.notes.length === 0 && <p>There are no notes found for your request</p>}
       {data?.notes && <NoteList notes={data.notes} />}
       {openModal && <NoteModal toClose={closeModal} />}
     </div>

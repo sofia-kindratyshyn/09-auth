@@ -4,7 +4,7 @@ import NotesClient from './Notes.client'
 const Notes = async () => {
   const notes = await getNotes('', 1)
 
-  return <NotesClient responce={notes} />
+  return <NotesClient response={notes} />
 }
 
 export default Notes
