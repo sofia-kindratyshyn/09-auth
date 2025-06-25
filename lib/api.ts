@@ -9,7 +9,10 @@ export type NotesResponse = {
   totalPages: number
 }
 
-export const getNotes = async (searchedValue: string, pageCount: number) => {
+export const getNotes = async (
+  searchedValue: string,
+  pageCount: number
+): Promise<NotesResponse> => {
   const url = searchedValue
     ? `/notes?page=${pageCount}&perPage=12&search=${searchedValue}`
     : `/notes?page=${pageCount}&perPage=12`
@@ -23,8 +26,8 @@ export const getNotes = async (searchedValue: string, pageCount: number) => {
   return res.data
 }
 
-export const postNote = async (noteForPostObj: NoteForPost) => {
-  const res = await axios.post<NoteForPost>(`/notes`, noteForPostObj, {
+export const postNote = async (noteForPostObj: NoteForPost): Promise<Note> => {
+  const res = await axios.post<Note>(`/notes`, noteForPostObj, {
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
     },

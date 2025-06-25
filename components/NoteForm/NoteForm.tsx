@@ -34,9 +34,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
     },
     onSuccess: () => {
       toast.success('The note successfully created.')
-      queryClient.invalidateQueries({
-        predicate: query => query.queryKey[0] === 'note',
-      })
+      queryClient.invalidateQueries({ queryKey: ['note'] })
       onClose()
     },
   })
