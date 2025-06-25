@@ -7,7 +7,7 @@ import Pagination from '../components/Pagination/Pagination'
 import { Toaster } from 'react-hot-toast'
 import { useDebounce } from 'use-debounce'
 import React from 'react'
-import { getNotes, NotesResponce } from '../lib/api'
+import { getNotes, NotesResponce } from '../../lib/api'
 import SearchBox from '../components/SearchBox/SearchBox'
 import NoteModal from '../components/NoteModal/NoteModal'
 

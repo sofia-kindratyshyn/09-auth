@@ -1,5 +1,5 @@
 'use client'
-import { ErrorProps } from '../types/note'
+import { ErrorProps } from '../../types/note'
 
 export default function Error({ error, reset }: ErrorProps) {
   return (
