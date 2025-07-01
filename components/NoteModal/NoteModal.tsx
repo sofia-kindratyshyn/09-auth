@@ -1,23 +1,23 @@
 'use client'
 import { useEffect } from 'react'
-import NoteForm from '../NoteForm/NoteForm'
 import css from './NoteModal.module.css'
 import { createPortal } from 'react-dom'
 
 interface NoteModalProps {
-  toClose: () => void
+  toClose?: () => void
+  children?: React.ReactNode
 }
 
-export default function NoteModal({ toClose }: NoteModalProps) {
+export default function Modal({ toClose, children }: NoteModalProps) {
   function handleBackdropClick(event: React.MouseEvent<HTMLDivElement>) {
-    if (event.target === event.currentTarget) {
+    if (toClose && event.target === event.currentTarget) {
       toClose()
     }
   }
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
+      if (toClose && event.key === 'Escape') {
         toClose()
       }
     }
@@ -33,9 +33,7 @@ export default function NoteModal({ toClose }: NoteModalProps) {
 
   return createPortal(
     <div className={css.backdrop} role='dialog' aria-modal='true' onClick={handleBackdropClick}>
-      <div className={css.modal}>
-        <NoteForm onClose={toClose} />
-      </div>
+      <div className={css.modal}>{children}</div>
     </div>,
     document.body
   )

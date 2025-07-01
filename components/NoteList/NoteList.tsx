@@ -7,10 +7,12 @@ import Link from 'next/link'
 
 interface NoteListProps {
   notes: Note[]
+  category?: string[]
 }
 
-export default function NoteList({ notes }: NoteListProps) {
+export default function NoteList({ notes, category }: NoteListProps) {
   const queryClient = useQueryClient()
+
   const mutation = useMutation({
     mutationFn: (id: number) => deleteNote(id),
     onError: () => {
@@ -24,8 +26,9 @@ export default function NoteList({ notes }: NoteListProps) {
 
   return (
     <ul className={css.list}>
-      {notes.map(note => {
-        return (
+      {notes
+        .filter(note => !category || note.tag === category[0])
+        .map(note => (
           <li key={note.id} className={css.listItem}>
             <h2 className={css.title}>{note.title}</h2>
             <p className={css.content}>{note.content}</p>
@@ -38,8 +41,7 @@ export default function NoteList({ notes }: NoteListProps) {
               </button>
             </div>
           </li>
-        )
-      })}
+        ))}
     </ul>
   )
 }
