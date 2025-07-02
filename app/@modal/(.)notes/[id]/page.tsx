@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation'
 import NotePreview from '../../../../components/NotePreview/NotePreview'
-import Modal from '../../../../components/NoteModal/NoteModal'
+import Modal from '../../../../components/Modal/Modal'
 
 export default function NotePrewievPage() {
   const params = useParams()
