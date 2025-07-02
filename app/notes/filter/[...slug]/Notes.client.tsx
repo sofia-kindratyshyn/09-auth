@@ -3,14 +3,14 @@
 import css from './Notes.client.module.css'
 import React, { useState } from 'react'
 import { useDebounce } from 'use-debounce'
-import { getNotes } from '../../../lib/api'
-import NoteList from '../../../components/NoteList/NoteList'
-import SearchBox from '../../../components/SearchBox/SearchBox'
-import Pagination from '../../../components/Pagination/Pagination'
-import Modal from '../../../components/Modal/Modal'
 import { Toaster } from 'react-hot-toast'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import NoteForm from '../../../components/NoteForm/NoteForm'
+import { getNotes } from '../../../../lib/api'
+import SearchBox from '../../../../components/SearchBox/SearchBox'
+import Pagination from '../../../../components/Pagination/Pagination'
+import NoteList from '../../../../components/NoteList/NoteList'
+import Modal from '../../../../components/Modal/Modal'
+import NoteForm from '../../../../components/NoteForm/NoteForm'
 
 type NotesClientProps = {
   category?: string[]

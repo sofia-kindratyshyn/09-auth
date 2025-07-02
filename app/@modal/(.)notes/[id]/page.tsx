@@ -1,8 +1,8 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import NotePreview from '../../../../components/NotePreview/NotePreview'
 import Modal from '../../../../components/Modal/Modal'
+import NotePreview from './NotePreview'
 
 export default function NotePrewievPage() {
   const params = useParams()

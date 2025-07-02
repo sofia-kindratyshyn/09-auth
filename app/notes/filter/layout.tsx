@@ -1,4 +1,4 @@
-import css from './Notes.client.module.css'
+import css from '../filter/[...slug]/Notes.client.module.css'
 type Props = {
   children: React.ReactNode
   sidebar: React.ReactNode
