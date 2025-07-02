@@ -3,7 +3,7 @@
 import css from './Notes.client.module.css'
 import React, { useState } from 'react'
 import { useDebounce } from 'use-debounce'
-import { getNotes, NotesResponse } from '../../../lib/api'
+import { getNotes } from '../../../lib/api'
 import NoteList from '../../../components/NoteList/NoteList'
 import SearchBox from '../../../components/SearchBox/SearchBox'
 import Pagination from '../../../components/Pagination/Pagination'
@@ -13,11 +13,10 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import NoteForm from '../../../components/NoteForm/NoteForm'
 
 type NotesClientProps = {
-  response?: NotesResponse
   category?: string[]
 }
 
-export default function NotesClient({ category, response }: NotesClientProps) {
+export default function NotesClient({ category }: NotesClientProps) {
   const [page, setPage] = useState(1)
   const [searchedValue, setSearchedValue] = useState('')
   const [debouncedText] = useDebounce(searchedValue, 300)
@@ -27,7 +26,7 @@ export default function NotesClient({ category, response }: NotesClientProps) {
     queryKey: ['notes', debouncedText, page],
     queryFn: () => getNotes(debouncedText, page),
     placeholderData: keepPreviousData,
-    initialData: response,
+    refetchOnMount: false,
   })
 
   const getHandleSearch = (value: string) => {

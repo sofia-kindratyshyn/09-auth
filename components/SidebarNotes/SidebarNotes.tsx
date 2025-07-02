@@ -1,11 +1,15 @@
+'use client'
 import Link from 'next/link'
 import css from './SidebarNotes.module.css'
+import { getNotes } from '../../lib/api'
+import { useQuery } from '@tanstack/react-query'
 
-type SidebarNotesProps = {
-  notes: string[]
-}
-
-export default function SidebarNotes({ notes }: SidebarNotesProps) {
+export default function SidebarNotes() {
+  const { data } = useQuery({
+    queryKey: ['note-tag'],
+    queryFn: () => getNotes('', 1),
+    refetchOnMount: false,
+  })
   return (
     <ul className={css.menuList}>
       <li key='All' className={css.menuItem}>
@@ -13,15 +17,16 @@ export default function SidebarNotes({ notes }: SidebarNotesProps) {
           All
         </Link>
       </li>
-      {notes.map(tag => {
-        return (
-          <li key={tag} className={css.menuItem}>
-            <Link href={`/notes/filter/${tag}`} className={css.menuLink}>
-              {tag}
-            </Link>
-          </li>
-        )
-      })}
+      {data?.notes &&
+        data.notes.map(note => {
+          return (
+            <li key={note.tag} className={css.menuItem}>
+              <Link href={`/notes/filter/${note.tag}`} className={css.menuLink}>
+                {note.tag}
+              </Link>
+            </li>
+          )
+        })}
     </ul>
   )
 }

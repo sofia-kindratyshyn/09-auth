@@ -1,11 +1,9 @@
-import { getNotes } from '../../../lib/api'
 import NotesClient from './Notes.client'
 
-export default async function Notes() {
-  const notes = await getNotes('', 1)
+export default function Notes() {
   return (
     <>
-      <NotesClient response={notes} />
+      <NotesClient />
     </>
   )
 }
