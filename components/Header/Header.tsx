@@ -1,10 +1,8 @@
 import Link from 'next/link'
 import css from './Header.module.css'
 import TagsMenu from '../TagsMenu/TagsMenu'
-import { getNotes } from '../../lib/api'
 
 export default async function Header() {
-  const notes = await getNotes('', 1)
   return (
     <header className={css.header}>
       <Link href='/' aria-label='Home'>
@@ -16,7 +14,7 @@ export default async function Header() {
             <Link href='/'>Home</Link>
           </li>
           <li>
-            <TagsMenu notesResponce={notes} />
+            <TagsMenu />
           </li>
         </ul>
       </nav>

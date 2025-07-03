@@ -1,14 +1,8 @@
 import Link from 'next/link'
 import css from './TagsMenu.module.css'
-import { NotesResponse } from '../../lib/api'
 
-type TagsMenuProps = {
-  notesResponce: NotesResponse
-}
-
-export default function TagsMenu({ notesResponce }: TagsMenuProps) {
-  const { notes } = notesResponce
-  const uniqueTags = [...new Set(notes.map(note => note.tag))]
+export default function TagsMenu() {
+  const uniqueTags = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping']
   return (
     <>
       <div className={css.menuContainer}>

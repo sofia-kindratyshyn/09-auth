@@ -10,19 +10,31 @@ export type NotesResponse = {
 }
 
 export const getNotes = async (
-  searchedValue?: string,
-  pageCount?: number
+  searchedValue = '',
+  pageCount = 1,
+  tag?: string
 ): Promise<NotesResponse> => {
-  const url = searchedValue
-    ? `/notes?page=${pageCount}&perPage=12&search=${searchedValue}`
-    : `/notes?page=${pageCount}&perPage=12`
+  const params = new URLSearchParams()
+
+  params.append('page', pageCount.toString())
+  params.append('perPage', '12')
+
+  if (searchedValue) {
+    params.append('search', searchedValue)
+  }
+
+  if (tag) {
+    params.append('tag', tag)
+  }
+
+  const url = `/notes?${params.toString()}`
 
   const res = await axios.get<NotesResponse>(url, {
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
     },
   })
-  console.warn('⚠️ MOCK getNotes used at build time')
+
   return res.data
 }
 
@@ -47,8 +59,6 @@ export const deleteNote = async (id: number): Promise<Note> => {
 }
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  console.warn('⚠️ MOCK fetchNoteById used at build time')
-
   const res = await axios.get<Note>(`/notes/${id}`, {
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,

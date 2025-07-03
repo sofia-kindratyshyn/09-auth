@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { useQuery } from '@tanstack/react-query'
 import { fetchNoteById } from '../../../../lib/api'
+import Modal from '../../../../components/Modal/Modal'
 
 type NotePreviewProps = {
   id: string
@@ -19,20 +20,26 @@ export default function NotePreview({ id }: NotePreviewProps) {
   })
 
   return (
-    <div className={css.container}>
-      {data && (
-        <div className={css.item}>
-          <button className={css.backBtn} onClick={() => router.back()}>
-            Назад
-          </button>
-          <div className={css.header}>
-            <h2>{data.title}</h2>
-            {data.tag && <span className={css.tag}>{data.tag}</span>}
+    <Modal
+      toClose={() => {
+        router.back()
+      }}
+    >
+      <div className={css.container}>
+        {data && (
+          <div className={css.item}>
+            <button className={css.backBtn} onClick={() => router.back()}>
+              Назад
+            </button>
+            <div className={css.header}>
+              <h2>{data.title}</h2>
+              {data.tag && <span className={css.tag}>{data.tag}</span>}
+            </div>
+            <div className={css.content}>{data.content}</div>
+            <div className={css.date}>{new Date(data.createdAt).toLocaleDateString('uk-UA')}</div>
           </div>
-          <div className={css.content}>{data.content}</div>
-          <div className={css.date}>{new Date(data.createdAt).toLocaleDateString('uk-UA')}</div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </Modal>
   )
 }

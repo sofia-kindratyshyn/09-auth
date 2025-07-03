@@ -10,6 +10,7 @@ export default function SidebarNotes() {
     queryFn: () => getNotes('', 1),
     refetchOnMount: false,
   })
+  const uniqueTags = [...new Set(data?.notes.map(note => note.tag))]
   return (
     <ul className={css.menuList}>
       <li key='All' className={css.menuItem}>
@@ -18,11 +19,11 @@ export default function SidebarNotes() {
         </Link>
       </li>
       {data?.notes &&
-        data.notes.map(note => {
+        uniqueTags.map(tag => {
           return (
-            <li key={note.tag} className={css.menuItem}>
-              <Link href={`/notes/filter/${note.tag}`} className={css.menuLink}>
-                {note.tag}
+            <li key={tag} className={css.menuItem}>
+              <Link href={`/notes/filter/${tag}`} className={css.menuLink}>
+                {tag}
               </Link>
             </li>
           )

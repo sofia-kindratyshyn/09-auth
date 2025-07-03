@@ -4,7 +4,7 @@ import css from './Modal.module.css'
 import { createPortal } from 'react-dom'
 
 interface NoteModalProps {
-  toClose?: () => void
+  toClose: () => void
   children?: React.ReactNode
 }
 

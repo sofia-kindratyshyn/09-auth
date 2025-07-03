@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import { Toaster } from 'react-hot-toast'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { getNotes } from '../../../../lib/api'
+import { getNotes, NotesResponse } from '../../../../lib/api'
 import SearchBox from '../../../../components/SearchBox/SearchBox'
 import Pagination from '../../../../components/Pagination/Pagination'
 import NoteList from '../../../../components/NoteList/NoteList'
@@ -13,19 +13,21 @@ import Modal from '../../../../components/Modal/Modal'
 import NoteForm from '../../../../components/NoteForm/NoteForm'
 
 type NotesClientProps = {
-  category?: string[]
+  tag?: string[]
+  initialNotes?: NotesResponse
 }
 
-export default function NotesClient({ category }: NotesClientProps) {
+export default function NotesClient({ tag, initialNotes }: NotesClientProps) {
   const [page, setPage] = useState(1)
   const [searchedValue, setSearchedValue] = useState('')
   const [debouncedText] = useDebounce(searchedValue, 300)
   const [openModal, setOpenModal] = useState(false)
 
   const { data, isFetching } = useQuery({
-    queryKey: ['notes', debouncedText, page],
-    queryFn: () => getNotes(debouncedText, page),
+    queryKey: ['notes', debouncedText, page, tag],
+    queryFn: () => getNotes(debouncedText, page, tag?.[0]),
     placeholderData: keepPreviousData,
+    initialData: initialNotes,
     refetchOnMount: false,
   })
 
@@ -63,7 +65,7 @@ export default function NotesClient({ category }: NotesClientProps) {
 
       {data?.notes?.length === 0 && !isFetching && <p>There are no notes found for your request</p>}
 
-      {data && data?.notes?.length > 0 && <NoteList notes={data.notes} category={category} />}
+      {data && data?.notes?.length > 0 && <NoteList notes={data.notes} category={tag} />}
 
       {openModal && (
         <Modal toClose={closeModal}>
