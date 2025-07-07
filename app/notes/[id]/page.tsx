@@ -1,9 +1,10 @@
 import { fetchNoteById } from '../../../lib/api'
+import { Metadata } from '../../../types/note'
 import NoteDetailsClient from './NoteDetails.client'
 
 type NoteDetailsProps = { params: Promise<{ id: string }> }
 
-export async function generateMetadata({ params }: NoteDetailsProps) {
+export async function generateMetadata({ params }: NoteDetailsProps): Promise<Metadata> {
   const { id } = await params
   const selectedNote = await fetchNoteById(Number(id))
   return {

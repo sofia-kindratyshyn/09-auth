@@ -10,3 +10,17 @@ export type Note = {
   tag: string
   createdAt: string
 }
+
+export type Metadata = {
+  title: string
+  description: string
+  openGraph: {
+    title: string
+    description: string
+    url: string
+    images: {
+      url: string
+      alt: string
+    }[]
+  }
+}

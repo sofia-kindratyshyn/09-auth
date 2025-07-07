@@ -1,11 +1,12 @@
 import { getNotes } from '../../../../lib/api'
+import { Metadata } from '../../../../types/note'
 import NotesClient from './Notes.client'
 
 type FilteredNotesProps = {
   params: Promise<{ slug: string[] }>
 }
 
-export async function generateMetadata({ params }: FilteredNotesProps) {
+export async function generateMetadata({ params }: FilteredNotesProps): Promise<Metadata> {
   const { slug } = await params
   const category = slug[0]
   return {
