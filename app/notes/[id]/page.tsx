@@ -1,5 +1,5 @@
+import { Metadata } from 'next'
 import { fetchNoteById } from '../../../lib/api'
-import { Metadata } from '../../../types/note'
 import NoteDetailsClient from './NoteDetails.client'
 
 type NoteDetailsProps = { params: Promise<{ id: string }> }

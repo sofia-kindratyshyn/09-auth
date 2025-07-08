@@ -1,5 +1,5 @@
+import { Metadata } from 'next'
 import { getNotes } from '../../../../lib/api'
-import { Metadata } from '../../../../types/note'
 import NotesClient from './Notes.client'
 
 type FilteredNotesProps = {
