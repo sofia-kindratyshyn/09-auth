@@ -1,8 +1,8 @@
 'use client'
 import Link from 'next/link'
 import css from './SidebarNotes.module.css'
-import { getNotes } from '../../lib/api'
 import { useQuery } from '@tanstack/react-query'
+import { getNotes } from '../../lib/api/api'
 
 export default function SidebarNotes() {
   const { data } = useQuery({

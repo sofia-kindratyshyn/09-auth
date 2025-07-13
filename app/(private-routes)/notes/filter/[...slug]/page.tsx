@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
-import { getNotes } from '../../../../lib/api'
 import NotesClient from './Notes.client'
+import { getNotes } from '../../../../../lib/api/api'
 
 type FilteredNotesProps = {
   params: Promise<{ slug: string[] }>
