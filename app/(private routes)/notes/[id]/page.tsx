@@ -1,4 +1,5 @@
 //import { Metadata } from 'next'
+import AuthProvider from '../../../../components/AuthProvider/AuthProvider'
 import NoteDetailsClient from './NoteDetails.client'
 //import { fetchNoteByIdFromAPI } from '../../../../lib/api/api'
 
@@ -26,7 +27,11 @@ type NoteDetailsProps = { params: Promise<{ id: string }> }
 
 const NoteDetails = async ({ params }: NoteDetailsProps) => {
   const { id } = await params
-  return <NoteDetailsClient id={id} />
+  return (
+    <AuthProvider>
+      <NoteDetailsClient id={id} />
+    </AuthProvider>
+  )
 }
 
 export default NoteDetails

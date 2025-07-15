@@ -18,3 +18,8 @@ export const login = async (data: RegisterData) => {
   const res = clientApi.post<User>('/auth/login', data, authToken)
   return res
 }
+
+export const checkServerSession = async () => {
+  const res = await clientApi.get('/auth/session')
+  return res
+}

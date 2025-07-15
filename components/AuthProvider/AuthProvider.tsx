@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { checkServerSession } from '../../lib/api/session'
+import { checkServerSession } from '../../lib/api/serverApi'
 import { useAuthStore } from '../../lib/store/userAuthStore'
 import { ClipLoader } from 'react-spinners'
 
@@ -27,7 +27,7 @@ export default function AuthProvider({ children }: Props) {
           setUser(res.data)
         } else {
           if (privateRoutes.some(route => pathname.startsWith(route))) {
-            clearIsAuthenticated(false)
+            clearIsAuthenticated(true)
             router.push('/sign-in')
           }
         }
@@ -44,7 +44,21 @@ export default function AuthProvider({ children }: Props) {
     checkAuth()
   }, [pathname, router, setUser, clearIsAuthenticated])
 
-  if (isLoading) return <ClipLoader />
+  if (isLoading)
+    return (
+      <ClipLoader
+        size={50}
+        cssOverride={{
+          display: 'block',
+          margin: '0 auto',
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 9999,
+        }}
+      />
+    )
 
   return <>{children}</>
 }
