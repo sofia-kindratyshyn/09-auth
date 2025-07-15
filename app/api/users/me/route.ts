@@ -22,10 +22,12 @@ export async function PATCH(request: Request) {
   try {
     const cookieStore = await cookies()
     const body = await request.json()
+    const accessToken = cookieStore.get('accessToken')?.value
+    const refreshToken = cookieStore.get('refreshToken')?.value
 
     const { data } = await serverApi.patch('/users/me', body, {
       headers: {
-        Cookie: cookieStore.toString(),
+        Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
       },
     })
 

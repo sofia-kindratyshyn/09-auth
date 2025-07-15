@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import css from './SidebarNotes.module.css'
 import { useQuery } from '@tanstack/react-query'
-import { getNotes } from '../../lib/api/api'
+import { getNotes } from '../../lib/api/clientApi'
 
 export default function SidebarNotes() {
   const { data } = useQuery({

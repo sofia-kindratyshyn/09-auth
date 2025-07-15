@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { parse } from 'cookie'
-import { checkServerSession } from './lib/api/serverApi'
+import { checkServerSession } from './lib/api/session'
 
 const privateRoutes = ['/profile']
 const publicRoutes = ['/sign-in', '/sign-up']
@@ -57,12 +57,12 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (isPublicRoute) {
-    return NextResponse.redirect(new URL('/', request.url))
-  }
-  if (isPrivateRoute) {
-    return NextResponse.next()
-  }
+  // if (isPublicRoute) {
+  //   return NextResponse.redirect(new URL('/', request.url))
+  // }
+  // if (isPrivateRoute) {
+  //   return NextResponse.next()
+  // }
 }
 
 export const config = {

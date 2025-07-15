@@ -4,7 +4,7 @@ export type NoteForPost = {
   tag: string
 }
 export type Note = {
-  id: number
+  id: string
   title: string
   content: string
   tag: string

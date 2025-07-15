@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import { NoteForPost } from '../../types/note'
 import { useNoteDraftStore } from '../../lib/store/noteStore'
 import React from 'react'
-import { postNote } from '../../lib/api/api'
+import { postNote } from '../../lib/api/clientApi'
 
 interface NoteFormProps {
   onClose: () => void

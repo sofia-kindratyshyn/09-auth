@@ -3,7 +3,7 @@ import type { Note } from '../../types/note'
 import css from './NoteList.module.css'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
-import { deleteNote } from '../../lib/api/api'
+import { deleteNote } from '../../lib/api/clientApi'
 
 interface NoteListProps {
   notes: Note[]
@@ -14,7 +14,7 @@ export default function NoteList({ notes, category }: NoteListProps) {
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
-    mutationFn: (id: number) => deleteNote(id),
+    mutationFn: (id: string) => deleteNote(id),
     onError: () => {
       toast.error('There was an error while deleting.')
     },

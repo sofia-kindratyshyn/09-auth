@@ -1,40 +1,32 @@
-import { cookies } from 'next/headers'
-import { serverApi } from '../api'
 import { NextRequest, NextResponse } from 'next/server'
+import { serverApi } from '../api'
+import { cookies } from 'next/headers'
 
 export async function GET(request: NextRequest) {
-  const cookieStore = cookies()
-  const accessToken = (await cookieStore).get('accessToken')?.value
-  const refreshToken = (await cookieStore).get('refreshToken')?.value
-
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get('accessToken')?.value
+  const token = cookieStore.get('refreshToken')?.value
   const search = request.nextUrl.searchParams.get('search') ?? ''
   const page = Number(request.nextUrl.searchParams.get('page') ?? 1)
   const rawTag = request.nextUrl.searchParams.get('tag') ?? ''
   const tag = rawTag === 'All' ? '' : rawTag
 
-  if (!accessToken) {
-    return NextResponse.json({ error: 'Access token missing' }, { status: 401 })
-  }
-
-  try {
-    const { data } = await serverApi.get('/notes', {
-      params: {
-        ...(search && { search }),
-        page,
-        perPage: 12,
-        ...(tag && { tag }),
-      },
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        Cookie: `refreshToken=${refreshToken}; accessToken=${accessToken}`,
-      },
-    })
-
+  const { data } = await serverApi.get('/notes', {
+    headers: {
+      Cookie: `accessToken=${accessToken}; refreshToken=${token}`,
+    },
+    params: {
+      ...(search !== '' && { search }),
+      page,
+      perPage: 12,
+      ...(tag && { tag }),
+    },
+  })
+  if (data) {
     return NextResponse.json(data)
-  } catch (error) {
-    console.error('Failed to fetch notes', error)
-    return NextResponse.json({ error: 'Failed to fetch notes' }, { status: 500 })
   }
+
+  return NextResponse.json({ error: 'Failed to fetch notes' }, { status: 500 })
 }
 
 export async function POST(request: NextRequest) {
@@ -51,7 +43,6 @@ export async function POST(request: NextRequest) {
     })
 
     if (data) {
-      console.log(data)
       return NextResponse.json(data, { status: 201 })
     }
   } catch (error) {

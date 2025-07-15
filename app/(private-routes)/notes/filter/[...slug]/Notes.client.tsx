@@ -9,14 +9,14 @@ import SearchBox from '../../../../../components/SearchBox/SearchBox'
 import Pagination from '../../../../../components/Pagination/Pagination'
 import NoteList from '../../../../../components/NoteList/NoteList'
 import Link from 'next/link'
-import { getNotes, NotesResponse } from '../../../../../lib/api/api'
+import { getNotes } from '../../../../../lib/api/clientApi'
 
 type NotesClientProps = {
   tag?: string
-  initialNotes: NotesResponse
+  //initialNotes: NotesResponse
 }
 
-export default function NotesClient({ tag, initialNotes }: NotesClientProps) {
+export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1)
   const [searchedValue, setSearchedValue] = useState('')
   const [debouncedText] = useDebounce(searchedValue, 300)
@@ -25,7 +25,7 @@ export default function NotesClient({ tag, initialNotes }: NotesClientProps) {
     queryKey: ['notes', debouncedText, page, tag],
     queryFn: () => getNotes(debouncedText, page, tag),
     placeholderData: keepPreviousData,
-    initialData: initialNotes,
+    //initialData: initialNotes,
     refetchOnMount: false,
   })
 

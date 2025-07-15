@@ -3,10 +3,10 @@ import css from './NotePreview.client.module.css'
 import { useRouter } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import Modal from '../../../../components/Modal/Modal'
-import { fetchNoteById } from '../../../../lib/api/api'
+import { fetchNoteById } from '../../../../lib/api/clientApi'
 
 type NotePreviewProps = {
-  id: number
+  id: string
 }
 
 export default function NotePreview({ id }: NotePreviewProps) {
