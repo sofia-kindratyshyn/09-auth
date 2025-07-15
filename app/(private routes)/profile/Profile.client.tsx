@@ -3,7 +3,7 @@ import Link from 'next/link'
 import css from './Profile.client.module.css'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-import { useAuthStore } from '../../../lib/store/userAuthStore'
+import { useAuthStore } from '../../../lib/store/authStore'
 
 export const metaData: Metadata = {
   title: 'User`s profile',

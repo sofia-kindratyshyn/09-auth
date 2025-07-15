@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import css from './edit.module.css'
-import { useAuthStore } from '../../../../lib/store/userAuthStore'
+import { useAuthStore } from '../../../../lib/store/authStore'
 import { useRouter } from 'next/navigation'
 import { updateUser } from '../../../../lib/api/clientApi'
 //import { updateUser } from '../../../../lib/api/clientApi'

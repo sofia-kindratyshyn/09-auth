@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { checkServerSession } from '../../lib/api/serverApi'
-import { useAuthStore } from '../../lib/store/userAuthStore'
+import { useAuthStore } from '../../lib/store/authStore'
 import { ClipLoader } from 'react-spinners'
 
 const privateRoutes = ['/profile', '/notes']

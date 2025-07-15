@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { register, RegisterData } from '../../../lib/api/serverApi'
 import css from './SignUp.client.module.css'
 import { useRouter } from 'next/navigation'
-import { useAuthStore } from '../../../lib/store/userAuthStore'
+import { useAuthStore } from '../../../lib/store/authStore'
 
 export default function SignUpClientPage() {
   const { setUser, clearIsAuthenticated } = useAuthStore()

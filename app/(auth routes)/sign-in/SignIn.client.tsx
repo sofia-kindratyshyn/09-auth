@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { login, RegisterData } from '../../../lib/api/serverApi'
 import css from './SignIn.client.module.css'
 import { useRouter } from 'next/navigation'
-import { useAuthStore } from '../../../lib/store/userAuthStore'
+import { useAuthStore } from '../../../lib/store/authStore'
 
 export default function SighInClient() {
   const [error, setError] = useState('')
