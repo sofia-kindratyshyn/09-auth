@@ -1,9 +1,56 @@
-import SignUpClientPage from './SignUp.client'
+'use client'
 
-export default function SignUpPage() {
+import { useState } from 'react'
+import { register, RegisterData } from '../../../lib/api/clientApi'
+import css from './SignUp.client.module.css'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '../../../lib/store/authStore'
+
+export default function SignUpClientPage() {
+  const { setUser, setIsAuthenticated: clearIsAuthenticated } = useAuthStore()
+  const [error, setError] = useState('')
+  const router = useRouter()
+  async function handleSubmit(formData: FormData) {
+    try {
+      const formValues = Object.fromEntries(formData) as RegisterData
+      const registerRequest = await register(formValues)
+      clearIsAuthenticated(true)
+      setUser(registerRequest.data)
+      router.push('/profile')
+    } catch (error) {
+      console.log(error)
+      setError('Invalid email or password')
+    }
+  }
   return (
-    <>
-      <SignUpClientPage />
-    </>
+    <main className={css.mainContent}>
+      <h1 className={css.formTitle}>Sign up</h1>
+      <form className={css.form} action={handleSubmit}>
+        <div className={css.formGroup}>
+          <label htmlFor='email'>Email</label>
+          <input id='email' type='email' name='email' className={css.input} required />
+        </div>
+
+        <div className={css.formGroup}>
+          <label htmlFor='password'>Password</label>
+          <input
+            id='password'
+            type='password'
+            name='password'
+            className={css.input}
+            required
+            autoComplete='new-password'
+          />
+        </div>
+
+        <div className={css.actions}>
+          <button type='submit' className={css.submitButton}>
+            Register
+          </button>
+        </div>
+
+        <p className={css.error}>{error}</p>
+      </form>
+    </main>
   )
 }

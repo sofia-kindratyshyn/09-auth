@@ -4,6 +4,7 @@ import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 import QueryProvider from '../components/TanStackProvider/TanStackProvider'
 import { Roboto } from 'next/font/google'
+import AuthProvider from '../components/AuthProvider/AuthProvider'
 
 const roboto = Roboto({
   weight: ['300', '400', '700'],
@@ -41,10 +42,12 @@ export default function RootLayout({
     <html lang='en'>
       <body className={roboto.variable}>
         <QueryProvider>
-          <Header />
-          {children}
-          {modal}
-          <Footer />
+          <AuthProvider>
+            <Header />
+            {children}
+            {modal}
+            <Footer />
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

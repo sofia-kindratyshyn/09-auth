@@ -4,8 +4,10 @@ import { useQuery } from '@tanstack/react-query'
 import css from './NoteDetails.module.css'
 import { Note } from '../../../../types/note'
 import { fetchNoteById } from '../../../../lib/api/clientApi'
+import { useRouter } from 'next/navigation'
 
 export default function NoteDetailsClient({ id }: { id: string }) {
+  const router = useRouter()
   const {
     data: note,
     isLoading,
@@ -24,10 +26,17 @@ export default function NoteDetailsClient({ id }: { id: string }) {
         <div className={css.item}>
           <div className={css.header}>
             <h2>{note.title}</h2>
-            <button className={css.editBtn}>Edit note</button>
+            <button
+              className={css.editBtn}
+              onClick={() => {
+                router.back()
+              }}
+            >
+              Back
+            </button>
           </div>
           <p className={css.content}>{note.content}</p>
-          <p className={css.date}>{note.createdAt}</p>
+          <p className={css.date}>{new Date(note.createdAt).toLocaleDateString('uk-UA')}</p>
         </div>
       </div>
     </>

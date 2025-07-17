@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { parse } from 'cookie'
-import { checkServerSession } from './lib/api/serverApi'
+import { checkServerSession } from './lib/api/clientApi'
 
-const privateRoutes = ['/profile']
+const privateRoutes = ['/profile', '/notes']
 const publicRoutes = ['/sign-in', '/sign-up']
 
 export async function middleware(request: NextRequest) {
@@ -57,14 +57,14 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // if (isPublicRoute) {
-  //   return NextResponse.redirect(new URL('/', request.url))
-  // }
-  // if (isPrivateRoute) {
-  //   return NextResponse.next()
-  // }
+  if (isPublicRoute) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+  if (isPrivateRoute) {
+    return NextResponse.next()
+  }
 }
 
 export const config = {
-  matcher: ['/profile', '/sign-in', '/sign-up'],
+  matcher: ['/profile/:path*', '/notes/filter/:path*', '/sign-in', '/sign-up'],
 }

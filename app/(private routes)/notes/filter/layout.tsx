@@ -1,4 +1,3 @@
-import AuthProvider from '../../../../components/AuthProvider/AuthProvider'
 import css from '../filter/[...slug]/Notes.client.module.css'
 type Props = {
   children: React.ReactNode
@@ -7,12 +6,10 @@ type Props = {
 
 const NotesLayout = ({ children, sidebar }: Props) => {
   return (
-    <AuthProvider>
-      <section className={css.container}>
-        <div className={css.sidebar}>{sidebar}</div>
-        <div>{children}</div>
-      </section>
-    </AuthProvider>
+    <section className={css.container}>
+      <div className={css.sidebar}>{sidebar}</div>
+      <div>{children}</div>
+    </section>
   )
 }
 

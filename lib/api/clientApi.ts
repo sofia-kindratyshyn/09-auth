@@ -1,12 +1,10 @@
-import axios from 'axios'
 import { Note, NoteForPost } from '../../types/note'
-import { clientApi } from './api'
+import { nextServer } from './api'
+import { User } from '../../types/user'
 
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL + '/api'
-
-export const logout = async () => {
-  const res = await axios.post('auth/logout', null)
-  return res
+export type RegisterData = {
+  email: string
+  password: string
 }
 
 type UserData = {
@@ -14,14 +12,19 @@ type UserData = {
   username: string
 }
 
-export const updateUser = async (data: UserData) => {
-  const res = await clientApi.patch('/users/me', data)
+export const logout = async () => {
+  const res = await nextServer.post('auth/logout', null)
   return res
 }
 
 export type NotesResponse = {
   notes: Note[]
   totalPages: number
+}
+
+export const updateUser = async (data: UserData) => {
+  const res = await nextServer.patch('/users/me', data)
+  return res
 }
 
 export const getNotes = async (
@@ -38,24 +41,39 @@ export const getNotes = async (
 
   const url = `/notes?${params.toString()}`
 
-  const res = await clientApi.get<NotesResponse>(url)
+  const res = await nextServer.get<NotesResponse>(url)
   return res.data
 }
 
 export const postNote = async (noteForPostObj: NoteForPost): Promise<Note> => {
-  const res = await clientApi.post<Note>(`/notes`, noteForPostObj)
+  const res = await nextServer.post<Note>(`/notes`, noteForPostObj)
 
   return res.data
 }
 
 export const deleteNote = async (id: string): Promise<Note> => {
-  const res = await clientApi.delete<Note>(`/notes/${id}`)
+  const res = await nextServer.delete<Note>(`/notes/${id}`)
 
   return res.data
 }
 
+export const register = async (data: RegisterData) => {
+  const res = await nextServer.post<User>('/auth/register', data)
+  return res
+}
+
+export const login = async (data: RegisterData) => {
+  const res = nextServer.post<User>('/auth/login', data)
+  return res
+}
+
+export const checkServerSession = async () => {
+  const res = await nextServer.get('/auth/session')
+  return res
+}
+
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const res = await clientApi.get<Note>(`/notes/${id}`)
+  const res = await nextServer.get<Note>(`/notes/${id}`)
   console.log(res.data)
   return res.data
 }

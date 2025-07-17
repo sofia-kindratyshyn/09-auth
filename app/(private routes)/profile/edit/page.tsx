@@ -1,35 +1,41 @@
 'use client'
+
 import Image from 'next/image'
 import css from './edit.module.css'
 import { useAuthStore } from '../../../../lib/store/authStore'
 import { useRouter } from 'next/navigation'
 import { updateUser } from '../../../../lib/api/clientApi'
-//import { updateUser } from '../../../../lib/api/clientApi'
 
-type UpatedInfo = {
+type UpdatedInfo = {
   username: string
 }
+
 export default function EditPage() {
   const { user, setUser } = useAuthStore()
   const router = useRouter()
-  async function handleSubitUser(formData: FormData) {
-    const formValue = Object.fromEntries(formData) as UpatedInfo
+
+  async function handleSubmitUser(formData: FormData) {
+    const formValue = Object.fromEntries(formData) as UpdatedInfo
+
     const payload = {
       username: formValue.username,
       email: user.email,
     }
-    console.log(payload)
+
     const { data } = await updateUser(payload)
-    if (data) setUser(payload)
+
+    if (data) setUser(data)
+
     router.push('/profile')
   }
+
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src='https://cdn-icons-png.flaticon.com/512/3675/3675805.png'
+          src='https://ac.goit.global/fullstack/react/default-avatar.jpg'
           alt='User Avatar'
           width={120}
           height={120}
@@ -37,10 +43,16 @@ export default function EditPage() {
           priority
         />
 
-        <form className={css.profileInfo} action={handleSubitUser}>
+        <form className={css.profileInfo} action={handleSubmitUser}>
           <div className={css.usernameWrapper}>
             <label htmlFor='username'>Username:</label>
-            <input id='username' name='username' type='text' className={css.input} />
+            <input
+              id='username'
+              name='username'
+              type='text'
+              className={css.input}
+              defaultValue={user.username}
+            />
           </div>
 
           <p>Email: {user.email}</p>
@@ -49,11 +61,7 @@ export default function EditPage() {
             <button type='submit' className={css.saveButton}>
               Save
             </button>
-            <button
-              type='button'
-              className={css.cancelButton}
-              onClick={() => router.push('/profile')}
-            >
+            <button type='button' className={css.cancelButton} onClick={() => router.back()}>
               Cancel
             </button>
           </div>

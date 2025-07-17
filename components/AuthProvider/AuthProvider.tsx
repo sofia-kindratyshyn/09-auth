@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { checkServerSession } from '../../lib/api/serverApi'
+import { checkServerSession } from '../../lib/api/clientApi'
 import { useAuthStore } from '../../lib/store/authStore'
 import { ClipLoader } from 'react-spinners'
 
@@ -14,9 +14,7 @@ type Props = {
 
 export default function AuthProvider({ children }: Props) {
   const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
-  const pathname = usePathname()
-  const { setUser, clearIsAuthenticated } = useAuthStore()
+  const { setUser, setIsAuthenticated } = useAuthStore()
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -26,23 +24,17 @@ export default function AuthProvider({ children }: Props) {
         if (res?.data) {
           setUser(res.data)
         } else {
-          if (privateRoutes.some(route => pathname.startsWith(route))) {
-            clearIsAuthenticated(true)
-            router.push('/sign-in')
-          }
+          setIsAuthenticated(false)
         }
       } catch {
-        if (privateRoutes.some(route => pathname.startsWith(route))) {
-          clearIsAuthenticated(true)
-          router.push('/sign-in')
-        }
+        setIsAuthenticated(false)
       } finally {
         setIsLoading(false)
       }
     }
 
     checkAuth()
-  }, [pathname, router, setUser, clearIsAuthenticated])
+  }, [setUser, setIsAuthenticated])
 
   if (isLoading)
     return (
