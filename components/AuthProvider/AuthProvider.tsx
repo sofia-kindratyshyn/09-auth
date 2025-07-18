@@ -1,10 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import { checkServerSession } from '../../lib/api/clientApi'
+import { checkCurrSession, getCurrUser } from '../../lib/api/clientApi'
 import { useAuthStore } from '../../lib/store/authStore'
 import { ClipLoader } from 'react-spinners'
+import { useRouter } from 'next/navigation'
 
 const privateRoutes = ['/profile', '/notes']
 
@@ -14,17 +14,21 @@ type Props = {
 
 export default function AuthProvider({ children }: Props) {
   const [isLoading, setIsLoading] = useState(true)
-  const { setUser, setIsAuthenticated } = useAuthStore()
+  const { setUser, setIsAuthenticated, cleanAuth } = useAuthStore()
+  const router = useRouter()
 
   useEffect(() => {
     const checkAuth = async () => {
       setIsLoading(true)
       try {
-        const res = await checkServerSession()
-        if (res?.data) {
-          setUser(res.data)
+        const res = await checkCurrSession()
+        if (res) {
+          const currUser = await getCurrUser()
+          setUser(currUser)
+          setIsAuthenticated(true)
         } else {
-          setIsAuthenticated(false)
+          cleanAuth()
+          router.push('/sign-in')
         }
       } catch {
         setIsAuthenticated(false)

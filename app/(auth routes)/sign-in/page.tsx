@@ -13,11 +13,11 @@ export default function SighInClient() {
     try {
       const formValues = Object.fromEntries(formData) as RegisterData
       const loginRequest = await login(formValues)
-      setUser(loginRequest.data)
+      setUser(loginRequest)
       setIsAuthenticated(true)
       router.push('/profile')
     } catch {
-      setError('Some error')
+      setError('Invalid email or password')
     }
   }
   return (

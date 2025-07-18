@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { parse } from 'cookie'
-import { checkServerSession } from './lib/api/clientApi'
+import { checkSession } from './lib/api/serverApi'
 
 const privateRoutes = ['/profile', '/notes']
 const publicRoutes = ['/sign-in', '/sign-up']
@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
 
   if (!accessToken) {
     if (refreshToken) {
-      const data = await checkServerSession()
+      const data = await checkSession()
       const setCookie = data.headers['set-cookie']
 
       if (setCookie) {

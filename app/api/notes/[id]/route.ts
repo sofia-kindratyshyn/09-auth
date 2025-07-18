@@ -9,12 +9,9 @@ type Props = {
 export async function GET(request: Request, { params }: Props) {
   const cookieStore = await cookies()
   const { id } = await params
-  const accessToken = cookieStore.get('accessToken')?.value
-  const token = cookieStore.get('refreshToken')?.value
-
-  const { data } = await serverApi.get(`/notes/${id}`, {
+  const { data } = await serverApi(`/notes/${id}`, {
     headers: {
-      Cookie: `accessToken=${accessToken}; refreshToken=${token}`,
+      Cookie: cookieStore.toString(),
     },
   })
   if (data) {

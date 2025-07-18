@@ -19,7 +19,6 @@ export default function EditPage() {
 
     const payload = {
       username: formValue.username,
-      email: user.email,
     }
 
     const { data } = await updateUser(payload)

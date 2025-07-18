@@ -3,7 +3,7 @@ import css from './NotePreview.client.module.css'
 import { useRouter } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import Modal from '../../../../components/Modal/Modal'
-import { fetchNoteById } from '../../../../lib/api/clientApi'
+import { fetchCurrNoteById } from '../../../../lib/api/clientApi'
 
 type NotePreviewProps = {
   id: string
@@ -14,7 +14,7 @@ export default function NotePreview({ id }: NotePreviewProps) {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['noteId', id],
-    queryFn: () => fetchNoteById(id),
+    queryFn: () => fetchCurrNoteById(id),
     refetchOnMount: false,
   })
   if (isLoading) return <p>Loading, please wait...</p>

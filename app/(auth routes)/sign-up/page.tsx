@@ -7,19 +7,19 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '../../../lib/store/authStore'
 
 export default function SignUpClientPage() {
-  const { setUser, setIsAuthenticated: clearIsAuthenticated } = useAuthStore()
+  const { setUser, setIsAuthenticated } = useAuthStore()
   const [error, setError] = useState('')
   const router = useRouter()
   async function handleSubmit(formData: FormData) {
     try {
       const formValues = Object.fromEntries(formData) as RegisterData
       const registerRequest = await register(formValues)
-      clearIsAuthenticated(true)
-      setUser(registerRequest.data)
+      setIsAuthenticated(true)
+      setUser(registerRequest)
       router.push('/profile')
     } catch (error) {
       console.log(error)
-      setError('Invalid email or password')
+      setError('Some error')
     }
   }
   return (

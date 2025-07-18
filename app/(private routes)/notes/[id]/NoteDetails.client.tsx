@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import css from './NoteDetails.module.css'
 import { Note } from '../../../../types/note'
-import { fetchNoteById } from '../../../../lib/api/clientApi'
+import { fetchCurrNoteById } from '../../../../lib/api/clientApi'
 import { useRouter } from 'next/navigation'
 
 export default function NoteDetailsClient({ id }: { id: string }) {
@@ -14,7 +14,7 @@ export default function NoteDetailsClient({ id }: { id: string }) {
     error,
   } = useQuery<Note>({
     queryKey: ['note-details', id],
-    queryFn: () => fetchNoteById(id),
+    queryFn: () => fetchCurrNoteById(id),
     refetchOnMount: false,
   })
 

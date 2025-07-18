@@ -2,8 +2,9 @@ import { getUser } from '../../../lib/api/serverApi'
 import Image from 'next/image'
 import Link from 'next/link'
 import css from './Profile.client.module.css'
+import { Metadata } from 'next'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "User's profile",
   description: 'Profile info page',
 }
@@ -22,7 +23,11 @@ export default async function ProfilePage() {
         </div>
         <div className={css.avatarWrapper}>
           <Image
-            src='https://ac.goit.global/fullstack/react/default-avatar.jpg'
+            src={
+              user.avatar
+                ? `${user.avatar}`
+                : 'https://ac.goit.global/fullstack/react/default-avatar.jpg'
+            }
             alt='User Avatar'
             width={120}
             height={120}

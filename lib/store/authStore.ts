@@ -7,6 +7,7 @@ type AuthStore = {
   setIsAuthenticated: (value: boolean) => void
   setUser: (userData: User) => void
   user: User
+  cleanAuth: () => void
 }
 
 const initialUserData: User = {
@@ -22,6 +23,7 @@ export const useAuthStore = create<AuthStore>()(
       isAuthenticated: false,
       setIsAuthenticated: (value: boolean) => set({ isAuthenticated: value }),
       setUser: (userData: User) => set({ user: userData, isAuthenticated: true }),
+      cleanAuth: () => set({ user: initialUserData, isAuthenticated: false }),
     }),
     {
       name: 'auth-storage',

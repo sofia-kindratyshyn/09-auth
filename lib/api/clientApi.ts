@@ -8,13 +8,12 @@ export type RegisterData = {
 }
 
 type UserData = {
-  email?: string
   username: string
 }
 
 export const logout = async () => {
-  const res = await nextServer.post('auth/logout', null)
-  return res
+  const res = await nextServer.post('auth/logout')
+  return res.data
 }
 
 export type NotesResponse = {
@@ -59,21 +58,25 @@ export const deleteNote = async (id: string): Promise<Note> => {
 
 export const register = async (data: RegisterData) => {
   const res = await nextServer.post<User>('/auth/register', data)
-  return res
+  return res.data
 }
 
 export const login = async (data: RegisterData) => {
-  const res = nextServer.post<User>('/auth/login', data)
-  return res
+  const res = await nextServer.post<User>('/auth/login', data)
+  return res.data
 }
 
-export const checkServerSession = async () => {
-  const res = await nextServer.get('/auth/session')
-  return res
-}
-
-export const fetchNoteById = async (id: string): Promise<Note> => {
+export const fetchCurrNoteById = async (id: string): Promise<Note> => {
   const res = await nextServer.get<Note>(`/notes/${id}`)
-  console.log(res.data)
+  return res.data
+}
+
+export const checkCurrSession = async () => {
+  const res = await nextServer.get('/auth/session')
+  return res.data
+}
+
+export const getCurrUser = async () => {
+  const res = await nextServer.get<User>('/users/me')
   return res.data
 }
