@@ -6,8 +6,6 @@ import { useAuthStore } from '../../lib/store/authStore'
 import { ClipLoader } from 'react-spinners'
 import { useRouter } from 'next/navigation'
 
-//const privateRoutes = ['/profile', '/notes']
-
 type Props = {
   children: React.ReactNode
 }

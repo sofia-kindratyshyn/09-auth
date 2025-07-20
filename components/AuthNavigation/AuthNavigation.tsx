@@ -13,7 +13,7 @@ export default function AuthNavigation() {
   } = useAuthStore()
   const router = useRouter()
   const handleClick = async () => {
-    const logoutRes = await logout()
+     await logout()
     clearIsAuthenticated(false)
     router.push('/sign-in')
   }
